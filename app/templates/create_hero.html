@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="nes-container is-dark with-title">
+        <p class="title">Novo Herói</p>
+        
+        <form action="{{ url_for('main.create_hero') }}" method="POST">
+            <div class="nes-field">
+                <label>Seu Nome:</label>
+                <input type="text" name="real_name" class="nes-input" required>
+            </div>
+            
+            <div class="nes-field">
+                <label>Nome do Herói:</label>
+                <input type="text" name="hero_name" class="nes-input" required>
+            </div>
+            
+            <br>
+            <button type="submit" class="nes-btn is-primary">CRIAR PERSONAGEM</button>
+        </form>
+    </section>
+{% endblock %}

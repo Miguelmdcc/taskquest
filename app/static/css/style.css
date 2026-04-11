@@ -1,0 +1,21 @@
+/* Fonte de jogo e fundo escuro para todos */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background-color: #212529; /* Fundo padrão NES */
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Container para dar um respiro no conteúdo */
+.container {
+    padding: 20px;
+    text-align: center;
+}
