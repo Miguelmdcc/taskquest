@@ -6,17 +6,15 @@
 
 #### Instalação
 
-##### A instalação é muito simples, se estiver no windows rode:
+##### A instalação é muito simples, se estiver no windows e já estiver na pasta do /taskquest rode:
 
 ```
-cd taskquest
 ./setup.bat
 ```
 
 ##### Se estiver no linux rode:
 
 ```
-cd taskquest
 source setup.sh
 ```
 
