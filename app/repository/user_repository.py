@@ -9,4 +9,13 @@ class UserRepository:
             user = User(real_name=real_name, hero_name=hero_name)
             db.session.add(user)
             db.session.commit()
+        else:
+            return False
+        return True
+
+    @staticmethod
+    def get_user(real_name, hero_name):
+        user =  User.query.filter_by(real_name=real_name, hero_name=hero_name).first()
+        if not user:
+            return user
         return user

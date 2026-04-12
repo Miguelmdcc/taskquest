@@ -6,11 +6,30 @@
     <link href="https://unpkg.com/nes.css/css/nes.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
+    
+    <div class="alert-overlay">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="nes-container is-rounded {{ 'is-error' if category == 'error' else 'is-success' }}">
+                <p style="margin: 0;">{{ message }}</p>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
 
     <div class="container">
         {% block content %}{% endblock %}
     </div>
 
+    <script>
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert-overlay');
+        alerts.forEach(el => el.style.display = 'none');
+    }, 3000);
+    </script>
+    
 </body>
 </html>

@@ -19,3 +19,21 @@ body {
     padding: 20px;
     text-align: center;
 }
+
+/* Container que segura os alertas */
+.alert-overlay {
+    position: absolute; /* Tira o alerta do fluxo normal da página */
+    top: 20px;          /* Distância do topo */
+    left: 50%;          /* Move para o meio da tela */
+    transform: translateX(-50%); /* Ajuste para centralizar perfeitamente */
+    z-index: 1000;      /* Garante que fique por cima de tudo */
+    width: auto;
+    pointer-events: none; /* Permite clicar no que está atrás se necessário */
+}
+
+/* O alerta em si */
+.alert-overlay .nes-container {
+    pointer-events: auto; /* Reativa o clique no alerta */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Sombra para dar profundidade */
+    min-width: 300px;
+}
