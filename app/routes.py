@@ -2,12 +2,10 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.repository.user_repository import UserRepository
 from app.repository.boss_repository import BossRepository
 from app.repository.tasks_repository import TaskRepository
-from app.use_cases.create_user import createUserUseCase
-from app.use_cases.login_user import loginUserUseCase
-from app.use_cases.create_task import createTaskUseCase
-from app.use_cases.delete_task import deleteTaskUseCase
-from app.use_cases.show_dashboard import showDashboardUseCase
-from app.use_cases.get_task_details_use_case import getTaskDetailsUseCase
+from app.use_cases.user_use_cases import createUserUseCase, loginUserUseCase
+from app.use_cases.task_use_cases import createTaskUseCase, deleteTaskUseCase, getTaskDetailsUseCase, acceptTaskUseCase
+from app.use_cases.dashboard_use_cases import showDashboardUseCase
+
 
 main = Blueprint('main', __name__)
 
@@ -38,3 +36,7 @@ def delete_task(task_id):
 @main.route('/dashboard/task/', methods=['GET', 'POST'])
 def get_task_details():
     return getTaskDetailsUseCase(request)
+
+@main.route('/dashboard/accept_task/<int:task_id>', methods=['POST'])
+def accept_task(task_id):
+    return acceptTaskUseCase(task_id, request)

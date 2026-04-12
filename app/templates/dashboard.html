@@ -32,7 +32,7 @@
                         <div class="nes-container is-rounded is-dark">
                             <p>{{ task.title }}</p>
                             <div class="task-buttons">
-                                <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
+                                <form action="{{ url_for('main.accept_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
                                     <button type="submit" class="nes-btn is-success">
                                         <i class="nes-icon like is-small"></i>
                                     </button>
@@ -55,7 +55,29 @@
         <div class="task-column nes-container with-title">
             <p class="title" id="board-title-2">Andamento</p>
             <div class="task-list">
-                </div>
+                {% for task in tasks %}
+                    {% if task.status == 'in_progress' %}
+                        <div class="nes-container is-rounded is-dark">
+                            <p>{{ task.title }}</p>
+                            <div class="task-buttons">
+                                <form action="{{ url_for('main.accept_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="nes-btn is-success">
+                                        <i class="nes-icon like is-small"></i>
+                                    </button>
+                                </form>
+                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id) }}" class="nes-btn is-primary">
+                                    <i class="nes-icon star is-small"></i>
+                                </a>
+                                <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="nes-btn is-error">
+                                        <i class="nes-icon close is-small"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
 
         <div class="task-column nes-container with-title">
@@ -67,8 +89,20 @@
                 <small>{{ boss.hp }} / {{ boss.max_hp }} HP</small>
             </div>
 
-            <div class="task-list" style="margin-top: 20px;">
-                </div>
+            <div class="task-list">
+                {% for task in tasks %}
+                    {% if task.status == 'completed' %}
+                        <div class="nes-container is-rounded is-dark">
+                            <p>{{ task.title }}</p>
+                            <div class="task-buttons">
+                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id) }}" class="nes-btn is-primary">
+                                    <i class="nes-icon star is-small"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
 
     </main>
