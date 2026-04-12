@@ -23,3 +23,16 @@ class UserRepository:
     @staticmethod
     def get_user_by_id(user_id):
         return User.query.get(user_id)
+    
+    @staticmethod
+    def user_rewards(user_id, xp, gold):
+        user = User.query.get(user_id)
+        if user:
+            user.xp += xp
+            while user.xp >= 100:
+                user.level += 1
+                user.xp = user.xp - 100
+            user.gold += gold
+            db.session.commit()
+            return user
+        return None

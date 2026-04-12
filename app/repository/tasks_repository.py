@@ -45,3 +45,7 @@ class TaskRepository:
             task.status = status
         db.session.commit()
         return task
+    
+    @staticmethod
+    def get_completed_tasks_by_user(user_id):
+        return Task.query.filter_by(user_id=user_id, status='completed').all()

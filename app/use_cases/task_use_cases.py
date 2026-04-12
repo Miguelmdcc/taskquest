@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, flash
 from app.repository.tasks_repository import TaskRepository
 from app.repository.user_repository import UserRepository
+from app.repository.boss_repository import BossRepository
 
 def createTaskUseCase(request):
     user_id = request.args.get('user_id') or request.form.get('user_id')
@@ -78,8 +79,14 @@ def acceptTaskUseCase(task_id, request):
 def doneTaskUseCase(task_id, request):
     user_id = request.args.get('user_id') or request.form.get('user_id')
     task = TaskRepository().update_task(task_id=task_id, status='completed')
-    if task:
-        flash("Missão concluída! Parabéns, herói!", "success")
+    tasks_completed = TaskRepository().get_completed_tasks_by_user(user_id=user_id)
+    user = UserRepository().user_rewards(user_id=user_id, xp=task.xp_reward, gold=task.gold_reward)
+    damage = user.level * len(tasks_completed)
+    boss = BossRepository().hurt_boss(user_id=user_id, damage=damage)
+    if task and boss and boss.status == 'defeated':
+        flash("Missão concluída! Parabéns, herói! Você derrotou o chefe!", "success")
+    elif task:
+        flash("Missão concluída! Parabéns, herói! Você causou {damage} de dano ao chefe!".format(damage=damage), "success")
     else:
         flash("Erro ao concluir a missão.", "error")
     return redirect(url_for('main.dashboard', user_id=user_id))

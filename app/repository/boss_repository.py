@@ -18,6 +18,7 @@ class BossRepository():
             boss_hp = boss.hp
             boss.hp = boss_hp - damage
             if boss.hp <= 0:
+                boss.hp = 0
                 boss.status = 'defeated'
             db.session.commit()
             return boss
