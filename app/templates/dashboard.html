@@ -1,15 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="nes-container is-dark with-title">
-    <p class="title">Status do Herói</p>
+<div class="dashboard-wrapper">
     
-    <h1>Bem-vindo, {{ hero_name }}!</h1>
-    
-    <p>Sua jornada nível 1 começou.</p>
-    
-    <progress class="nes-progress is-primary" value="0" max="100"></progress>
+    <aside class="sidebar nes-container is-dark with-title">
+        <p class="title">Status do Herói</p>
+        <div class="user-info">
+            <p><strong>{{ user.hero_name }}</strong></p>
+            <p>LVL: {{ user.level }}</p>
+            
+            <label>XP:</label>
+            <progress class="nes-progress is-primary" value="{{ user.xp }}" max="100"></progress>
+            
+            <p>MOEDAS: {{ user.gold }}G</p>
+        </div>
+    </aside>
 
-    <a href="{{ url_for('main.create_task') }}" class="nes-btn is-success">Criar Missão</a>
-</section>
+    <main class="task-board">
+        
+        <div class="task-column nes-container with-title">
+            <p class="title">Mural</p>
+            <div class="task-list">
+                <div class="nes-container is-rounded is-dark">Exemplo Task 1</div>
+            </div>
+        </div>
+
+        <div class="task-column nes-container with-title">
+            <p class="title">Andamento</p>
+            <div class="task-list">
+                </div>
+        </div>
+
+        <div class="task-column nes-container with-title">
+            <p class="title">Concluídas</p>
+            
+            <div class="boss-area nes-container is-error with-title">
+                <p class="title">BOSS: {{ boss.name }}</p>
+                <progress class="nes-progress is-error" value="{{ boss.hp }}" max="{{ boss.max_hp }}"></progress>
+                <small>{{ boss.hp }} / {{ boss.max_hp }} HP</small>
+            </div>
+
+            <div class="task-list" style="margin-top: 20px;">
+                </div>
+        </div>
+
+    </main>
+</div>
 {% endblock %}

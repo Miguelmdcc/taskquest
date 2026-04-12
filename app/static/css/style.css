@@ -37,3 +37,46 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Sombra para dar profundidade */
     min-width: 300px;
 }
+
+/* Container principal: coloca Sidebar e Board lado a lado */
+.dashboard-wrapper {
+    display: flex;
+    gap: 20px; /* Espaço entre a sidebar e as colunas */
+    align-items: flex-start;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Sidebar: largura fixa para não sumir */
+.sidebar {
+    flex: 0 0 250px; /* Não cresce, não diminui, fixa em 250px */
+}
+
+/* Quadro de Missões: ocupa o resto do espaço e divide em 3 */
+.task-board {
+    display: flex;
+    flex: 1; /* Ocupa todo o espaço que sobrar */
+    gap: 15px;
+    justify-content: space-between;
+}
+
+/* Cada coluna de Task */
+.task-column {
+    flex: 1; /* Faz as 3 colunas terem larguras iguais */
+    min-height: 80vh; /* Elas esticam até quase o fim da página */
+    background-color: #002950; /* Fundo branco para destacar as tasks */
+    color: #212529;
+}
+
+/* Estilo para as tasks dentro da lista */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Área do Boss dentro da terceira coluna */
+.boss-area {
+    background-color: #000;
+    margin-bottom: 15px;
+}

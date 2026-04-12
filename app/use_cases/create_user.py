@@ -1,5 +1,6 @@
 
 from app.repository.user_repository import UserRepository
+from app.repository.boss_repository import BossRepository
 from flask import render_template, redirect, url_for, flash
 
 def createUserUseCase(request):
@@ -14,6 +15,6 @@ def createUserUseCase(request):
             flash('O herói já existe. Por favor, escolha outro nome.', 'error')
             return render_template('create_hero.html')
 
-        return redirect(url_for('main.dashboard', name=real_name, hero=hero_name))
+        return redirect(url_for('main.dashboard', hero_name=user.hero_name, real_name=user.real_name))
     
     return render_template('create_hero.html')

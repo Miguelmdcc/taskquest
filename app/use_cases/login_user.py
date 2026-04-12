@@ -13,6 +13,6 @@ def loginUserUseCase(request):
             flash('O herói não existe. Por favor, crie um novo herói.', 'error')
             return render_template('use_hero.html')
 
-        return redirect(url_for('main.dashboard', name=real_name, hero=hero_name))
+        return redirect(url_for('main.dashboard', hero_name=user.hero_name, real_name=user.real_name))
     
     return render_template('use_hero.html')

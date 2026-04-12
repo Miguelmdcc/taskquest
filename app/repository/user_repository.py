@@ -9,9 +9,9 @@ class UserRepository:
             user = User(real_name=real_name, hero_name=hero_name)
             db.session.add(user)
             db.session.commit()
-        else:
-            return False
-        return True
+            return user
+
+        return None
 
     @staticmethod
     def get_user(real_name, hero_name):
