@@ -7,7 +7,7 @@ def loginUserUseCase(request):
         hero_name = request.form.get('hero_name')
 
         user_repository = UserRepository()
-        user = user_repository.get_user(real_name, hero_name)
+        user = user_repository.get_user_by_real_name_and_hero_name(real_name, hero_name)
         
         if not user:
             flash('O herói não existe. Por favor, crie um novo herói.', 'error')

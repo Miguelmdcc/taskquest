@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.repository.user_repository import UserRepository
 from app.repository.boss_repository import BossRepository
+from app.repository.tasks_repository import TaskRepository
 from app.use_cases.create_user import createUserUseCase
 from app.use_cases.login_user import loginUserUseCase
 from app.use_cases.create_task import createTaskUseCase
@@ -23,11 +24,12 @@ def use_hero():
 def dashboard():
     hero_name = request.args.get('hero_name')
     real_name = request.args.get('real_name')
-    user = UserRepository().get_user(real_name=real_name, hero_name=hero_name)
-    boss = BossRepository().create_boss(user_id=user.id)
+    user = UserRepository().get_user_by_real_name_and_hero_name(real_name=real_name, hero_name=hero_name)
+    boss = BossRepository().create_boss_if_not_exists(user_id=user.id)
+    task = TaskRepository().get_by_user(user_id=user.id)
 
-    return render_template('dashboard.html', user=user, boss=boss)
+    return render_template('dashboard.html', user=user, boss=boss, tasks=task)
 
-@main.route('/create-task')
+@main.route('/create-task', methods=['GET', 'POST'])
 def create_task():
     return createTaskUseCase(request)

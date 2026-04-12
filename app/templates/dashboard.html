@@ -14,14 +14,24 @@
             
             <p>MOEDAS: {{ user.gold }}G</p>
         </div>
+        <a href="{{ url_for('main.create_task', user_id=user.id) }}" class="nes-btn is-success">
+            Criar Missão
+        </a>
     </aside>
 
     <main class="task-board">
         
         <div class="task-column nes-container with-title">
-            <p class="title">Mural</p>
+            <p class="title">Mural de Missões</p>
             <div class="task-list">
-                <div class="nes-container is-rounded is-dark">Exemplo Task 1</div>
+                {% for task in tasks %}
+                    {% if task.status == 'pending' %}
+                        <div class="nes-container is-rounded is-dark">
+                            <p>{{ task.title }}</p>
+                            <button class="nes-btn is-primary">Aceitar</button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
 

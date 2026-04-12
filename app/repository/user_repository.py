@@ -14,8 +14,12 @@ class UserRepository:
         return None
 
     @staticmethod
-    def get_user(real_name, hero_name):
+    def get_user_by_real_name_and_hero_name(real_name, hero_name):
         user =  User.query.filter_by(real_name=real_name, hero_name=hero_name).first()
         if not user:
             return user
         return user
+    
+    @staticmethod
+    def get_user_by_id(user_id):
+        return User.query.get(user_id)
