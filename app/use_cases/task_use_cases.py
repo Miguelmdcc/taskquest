@@ -57,13 +57,14 @@ def getTaskDetailsUseCase(request):
         
     task_id = request.args.get('task_id')
     user_id = request.args.get('user_id')
+    read_only = request.args.get('read_only', 'false').lower()
     task = TaskRepository().get_task_by_id(task_id)
 
     if not task:
         flash("Tarefa não encontrada.", "error")
         return render_template('dashboard.html', user_id=user_id)
 
-    return render_template('task_details.html', task=task, user_id=user_id)
+    return render_template('task_details.html', task=task, user_id=user_id, read_only=read_only)
 
 def acceptTaskUseCase(task_id, request):
     user_id = request.args.get('user_id') or request.form.get('user_id')
@@ -72,4 +73,13 @@ def acceptTaskUseCase(task_id, request):
         flash("Missão aceita! Boa sorte, herói!", "success")
     else:
         flash("Erro ao aceitar a missão.", "error")
+    return redirect(url_for('main.dashboard', user_id=user_id))
+
+def doneTaskUseCase(task_id, request):
+    user_id = request.args.get('user_id') or request.form.get('user_id')
+    task = TaskRepository().update_task(task_id=task_id, status='completed')
+    if task:
+        flash("Missão concluída! Parabéns, herói!", "success")
+    else:
+        flash("Erro ao concluir a missão.", "error")
     return redirect(url_for('main.dashboard', user_id=user_id))

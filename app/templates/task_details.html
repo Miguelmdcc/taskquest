@@ -10,15 +10,17 @@
         <input type="hidden" name="task_id" value="{{ task.id }}">
         
         <label>Título da Missão:</label>
-        <input type="text" name="title" class="nes-input" value="{{ task.title }}">
+        <input type="text" name="title" class="nes-input" value="{{ task.title }}" {% if read_only %}readonly{% endif %}>
         <label>Descrição da Missão:</label>
-        <input type="text" name="description" class="nes-input" value="{{ task.description }}">
+        <input type="text" name="description" class="nes-input" value="{{ task.description }}" {% if read_only %}readonly{% endif %}>
         <label>XP:</label>
-        <input type="text" name="xp" class="nes-input" value="{{ task.xp_reward }}">
+        <input type="text" name="xp" class="nes-input" value="{{ task.xp_reward }}" {% if read_only %}readonly{% endif %}>
         <label>Ouro:</label>
-        <input type="text" name="gold" class="nes-input" value="{{ task.gold_reward }}">
+        <input type="text" name="gold" class="nes-input" value="{{ task.gold_reward }}" {% if read_only %}readonly{% endif %}>
         
-        <button type="submit" class="nes-btn is-success">Atualizar Missão no Mural</button>
+        {% if not read_only %}
+            <button type="submit" class="nes-btn is-success">Atualizar Missão no Mural</button>
+        {% endif %}
     </form>
 </section>
 {% endblock %}

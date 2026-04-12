@@ -3,7 +3,7 @@ from app.repository.user_repository import UserRepository
 from app.repository.boss_repository import BossRepository
 from app.repository.tasks_repository import TaskRepository
 from app.use_cases.user_use_cases import createUserUseCase, loginUserUseCase
-from app.use_cases.task_use_cases import createTaskUseCase, deleteTaskUseCase, getTaskDetailsUseCase, acceptTaskUseCase
+from app.use_cases.task_use_cases import createTaskUseCase, deleteTaskUseCase, getTaskDetailsUseCase, acceptTaskUseCase, doneTaskUseCase
 from app.use_cases.dashboard_use_cases import showDashboardUseCase
 
 
@@ -40,3 +40,7 @@ def get_task_details():
 @main.route('/dashboard/accept_task/<int:task_id>', methods=['POST'])
 def accept_task(task_id):
     return acceptTaskUseCase(task_id, request)
+
+@main.route('/dashboard/task_done/<int:task_id>', methods=['POST'])
+def task_done(task_id):
+    return doneTaskUseCase(task_id, request)

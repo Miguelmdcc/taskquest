@@ -37,7 +37,7 @@
                                         <i class="nes-icon like is-small"></i>
                                     </button>
                                 </form>
-                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id) }}" class="nes-btn is-primary">
+                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id, read_only=False) }}" class="nes-btn is-primary">
                                     <i class="nes-icon star is-small"></i>
                                 </a>
                                 <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
@@ -60,12 +60,12 @@
                         <div class="nes-container is-rounded is-dark">
                             <p>{{ task.title }}</p>
                             <div class="task-buttons">
-                                <form action="{{ url_for('main.accept_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
+                                <form action="{{ url_for('main.task_done', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
                                     <button type="submit" class="nes-btn is-success">
                                         <i class="nes-icon like is-small"></i>
                                     </button>
                                 </form>
-                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id) }}" class="nes-btn is-primary">
+                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id, read_only=False) }}" class="nes-btn is-primary">
                                     <i class="nes-icon star is-small"></i>
                                 </a>
                                 <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
@@ -95,7 +95,7 @@
                         <div class="nes-container is-rounded is-dark">
                             <p>{{ task.title }}</p>
                             <div class="task-buttons">
-                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id) }}" class="nes-btn is-primary">
+                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id, read_only=True) }}" class="nes-btn is-primary">
                                     <i class="nes-icon star is-small"></i>
                                 </a>
                             </div>
