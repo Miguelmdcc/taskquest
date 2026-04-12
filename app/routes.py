@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from app.repository.user_repository import UserRepository
 
 main = Blueprint('main', __name__)
 
@@ -11,6 +12,9 @@ def create_hero():
     if request.method == 'POST':
         real_name = request.form.get('real_name')
         hero_name = request.form.get('hero_name')
+
+        user_repository = UserRepository()
+        user_repository.create_user_if_not_exists(real_name, hero_name)
 
         return redirect(url_for('main.dashboard', name=real_name, hero=hero_name))
     

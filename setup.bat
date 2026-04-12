@@ -1,4 +1,4 @@
-e@echo off
+@echo off
 :: Configura o terminal para aceitar acentos (UTF-8)
 chcp 65001 >nul
 
@@ -30,8 +30,8 @@ if exist requirements.txt (
 :: Se a variável %PSModulePath% existir, você provavelmente está no PowerShell
 if not "%PSModulePath%"=="" (
     echo [PowerShell detectado] Ativando ambiente virtual...
-    powershell -NoExit -ExecutionPolicy Bypass -Command "& {.\venv\Scripts\Activate.ps1; Write-Host 'Bem-vindo ao TaskQuest! Sua aventura esta configurada e pronta para ser vivida! Vá e comece suas tasks no mundo de TaskQuest!' -ForegroundColor Green}"
+    powershell -NoExit -ExecutionPolicy Bypass -Command "& {.\venv\Scripts\Activate.ps1; python seed.py; Write-Host 'Bem-vindo ao TaskQuest! Sua aventura esta configurada e pronta para ser vivida! Vá e comece suas tasks no mundo de TaskQuest!' -ForegroundColor Green}"
 ) else (
     echo [CMD detectado] Ativando ambiente virtual...
-    cmd /k "venv\Scripts\activate.bat && echo Bem-vindo ao TaskQuest! Sua aventura esta configurada e pronta para ser vivida! Vá e comece suas tasks no mundo de TaskQuest!"
+    cmd /k "venv\Scripts\activate.bat && python seed.py && echo Bem-vindo ao TaskQuest! Sua aventura esta configurada e pronta para ser vivida! Vá e comece suas tasks no mundo de TaskQuest!"
 )

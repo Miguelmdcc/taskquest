@@ -46,6 +46,8 @@ else
     echo "[AVISO] requirements.txt não encontrado."
 fi
 
+python seed.py
+
 echo ""
 echo "✨ Sua aventura está configurada e pronta para ser vivida!"
 echo "🛡️  O ambiente virtual (venv) está ATIVO."
