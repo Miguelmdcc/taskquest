@@ -20,6 +20,7 @@ def createTaskUseCase(request):
 
         if not title or not description or not xp or not gold:
             flash("Todos os campos são obrigatórios para criar uma tarefa.", "error")
+            return redirect(url_for('main.dashboard', user_id=user_id))
 
         task = TaskRepository()
         task.create_task(user_id=user_id, title=title, description=description, xp_reward=xp, gold_reward=gold)
