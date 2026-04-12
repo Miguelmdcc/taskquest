@@ -49,3 +49,13 @@ class TaskRepository:
     @staticmethod
     def get_completed_tasks_by_user(user_id):
         return Task.query.filter_by(user_id=user_id, status='completed').all()
+    
+    @staticmethod
+    def delete_tasks_by_user_id(user_id):
+        tasks = Task.query.filter_by(user_id=user_id).all()
+        if tasks:
+            for task in tasks:
+                db.session.delete(task)
+            db.session.commit()
+            return True
+        return False

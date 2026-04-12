@@ -5,6 +5,7 @@ from app.repository.tasks_repository import TaskRepository
 from app.use_cases.user_use_cases import createUserUseCase, loginUserUseCase
 from app.use_cases.task_use_cases import createTaskUseCase, deleteTaskUseCase, getTaskDetailsUseCase, acceptTaskUseCase, doneTaskUseCase
 from app.use_cases.dashboard_use_cases import showDashboardUseCase
+from app.use_cases.reset_journey import resetJourneyUseCase
 
 
 main = Blueprint('main', __name__)
@@ -44,3 +45,8 @@ def accept_task(task_id):
 @main.route('/dashboard/task_done/<int:task_id>', methods=['POST'])
 def task_done(task_id):
     return doneTaskUseCase(task_id, request)
+
+@main.route('/dashboard/reset_journey/<int:user_id>', methods=['GET'])
+def reset_journey(user_id):
+    print("Reset Journey route called with user_id:", user_id)
+    return resetJourneyUseCase(user_id)

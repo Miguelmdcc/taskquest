@@ -23,3 +23,12 @@ class BossRepository():
             db.session.commit()
             return boss
         return None
+    
+    @staticmethod
+    def delete_boss_by_user_id(user_id):
+        boss = Boss.query.filter_by(user_id=user_id).first()
+        if boss:
+            db.session.delete(boss)
+            db.session.commit()
+            return True
+        return False

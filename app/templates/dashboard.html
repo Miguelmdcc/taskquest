@@ -156,15 +156,10 @@
         {% if boss.status == 'defeated' %}
             <dialog class="nes-dialog is-rounded is-dark" id="boss-defeated-dialog">
                 <form method="dialog">
-                    <button type="button" class="nes-btn is-error" onclick="this.closest('dialog').close();" style="position:absolute; top:10px; right:10px;">
-                        <i class="nes-icon close is-small"></i>
-                    </button>
-                    
                     <p class="title" style="color: #f7d51d;"><i class="nes-icon trophy is-small"></i> VITÓRIA! <i class="nes-icon trophy is-small"></i></p>
                     <p>O terrível <strong>{{ boss.name }}</strong> foi banido deste reino!</p>
                     <p>Você provou ser um verdadeiro mestre de tarefas.</p>
-                    
-                    <a href="{{ url_for('main.index') }}" class="nes-btn is-primary">Voltar ao Menu</a>
+                    <a href="{{ url_for('main.reset_journey', user_id=user.id) }}" class="nes-btn is-success">Começar Nova Jornada</a>
                 </form>
             </dialog>
 

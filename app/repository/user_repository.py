@@ -36,3 +36,14 @@ class UserRepository:
             db.session.commit()
             return user
         return None
+    
+    @staticmethod
+    def reset_user_progress(user_id):
+        user = User.query.get(user_id)
+        if user:
+            user.level = 1
+            user.xp = 0
+            user.gold = 0
+            db.session.commit()
+            return user
+        return None
