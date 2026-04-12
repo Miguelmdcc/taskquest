@@ -49,7 +49,7 @@ body {
 
 /* Sidebar: largura fixa para não sumir */
 .sidebar {
-    flex: 0 0 250px; /* Não cresce, não diminui, fixa em 250px */
+    flex: 0 0 250px;
 }
 
 /* Quadro de Missões: ocupa o resto do espaço e divide em 3 */
@@ -79,4 +79,67 @@ body {
 .boss-area {
     background-color: #000;
     margin-bottom: 15px;
+}
+
+.task-column p#board-title-1 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: white solid 2px;
+    background-color: #124f9e;
+}
+
+.task-column p#board-title-1 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: rgb(0, 0, 0) solid 2px;
+    background-color: #124f9e;
+    text-align: center;
+    padding: 10px;
+    display: block;
+    width: 100%;
+}
+
+.task-column p#board-title-2 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: rgb(0, 0, 0) solid 2px;
+    background-color: #129e4c;
+    text-align: center;
+    padding: 10px;
+    display: block;
+    width: 100%;
+}
+
+.task-column p#board-title-3 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: rgb(0, 0, 0) solid 2px;
+    background-color: #9e1212;
+    text-align: center;
+    padding: 10px;
+    display: block;
+    width: 100%;
+}
+
+#boss-title {
+    color: rgb(0, 0, 0);
+    -webkit-text-stroke: 4px rgb(255, 0, 0);
+    paint-order: stroke fill;
+    background-color: rgb(75, 0, 0);
+}
+
+#menu {
+    position: fixed; /* Fixa o elemento na tela */
+    top: 20px;       /* Distância do topo */
+    left: 20px;     /* Distância da direita */
+    z-index: 1000;   /* Garante que ele fique por cima de tudo */
+}
+
+/* Opcional: Ajuste para o botão não ficar colado no texto se a tela for pequena */
+#menu .nes-btn {
+    margin: 0;
 }

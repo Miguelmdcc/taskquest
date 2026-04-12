@@ -5,6 +5,9 @@ from app.repository.tasks_repository import TaskRepository
 from app.use_cases.create_user import createUserUseCase
 from app.use_cases.login_user import loginUserUseCase
 from app.use_cases.create_task import createTaskUseCase
+from app.use_cases.delete_task import deleteTaskUseCase
+from app.use_cases.show_dashboard import showDashboardUseCase
+from app.use_cases.get_task_details_use_case import getTaskDetailsUseCase
 
 main = Blueprint('main', __name__)
 
@@ -22,14 +25,16 @@ def use_hero():
 
 @main.route('/dashboard')
 def dashboard():
-    hero_name = request.args.get('hero_name')
-    real_name = request.args.get('real_name')
-    user = UserRepository().get_user_by_real_name_and_hero_name(real_name=real_name, hero_name=hero_name)
-    boss = BossRepository().create_boss_if_not_exists(user_id=user.id)
-    task = TaskRepository().get_by_user(user_id=user.id)
+    return showDashboardUseCase(request)
 
-    return render_template('dashboard.html', user=user, boss=boss, tasks=task)
-
-@main.route('/create-task', methods=['GET', 'POST'])
+@main.route('/dashboard/create-task', methods=['GET', 'POST'])
 def create_task():
     return createTaskUseCase(request)
+
+@main.route('/dashboard/delete-task/<int:task_id>', methods=['POST'])
+def delete_task(task_id):
+    return deleteTaskUseCase(task_id, request)
+
+@main.route('/dashboard/task/', methods=['GET', 'POST'])
+def get_task_details():
+    return getTaskDetailsUseCase(request)

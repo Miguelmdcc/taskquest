@@ -11,4 +11,4 @@ class Task(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f"<Task {self.name}>"
+        return f"<Task {self.title} description={self.description} xp={self.xp_reward} gold={self.gold_reward} status={self.status}>"

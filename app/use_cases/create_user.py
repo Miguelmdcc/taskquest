@@ -15,6 +15,6 @@ def createUserUseCase(request):
             flash('O herói já existe. Por favor, escolha outro nome.', 'error')
             return render_template('create_hero.html')
 
-        return redirect(url_for('main.dashboard', hero_name=user.hero_name, real_name=user.real_name))
+        return redirect(url_for('main.dashboard', user_id=user.id))
     
     return render_template('create_hero.html')
