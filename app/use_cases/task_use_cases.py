@@ -21,6 +21,9 @@ def createTaskUseCase(request):
         if not title or not description or not xp or not gold:
             flash("Todos os campos são obrigatórios para criar uma tarefa.", "error")
             return redirect(url_for('main.dashboard', user_id=user_id))
+        if int(xp) > 100 or int(xp) < 0 or int(gold) > 100 or int(gold) < 0:
+            flash("XP e Ouro devem ser entre 0 e 100.", "error")
+            return redirect(url_for('main.dashboard', user_id=user_id))
 
         task = TaskRepository()
         task.create_task(user_id=user_id, title=title, description=description, xp_reward=xp, gold_reward=gold)
@@ -74,17 +77,22 @@ def acceptTaskUseCase(task_id, request):
         flash("Erro ao aceitar a missão.", "error")
     return redirect(url_for('main.dashboard', user_id=user_id))
 
-def doneTaskUseCase(task_id, request):
+def doneTaskUseCase(request):
     user_id = request.args.get('user_id') or request.form.get('user_id')
+    print("User ID in doneTaskUseCase:", user_id)
+    task_id = request.form.get('task_id')
+    print("Task ID in doneTaskUseCase:", task_id)
+    skill_value = request.form.get('skill_value')
+    print("Received skill value:", skill_value)
     task = TaskRepository().update_task(task_id=task_id, status='completed')
     tasks_completed = TaskRepository().get_completed_tasks_by_user(user_id=user_id)
     user = UserRepository().user_rewards(user_id=user_id, xp=task.xp_reward, gold=task.gold_reward)
-    damage = user.level * len(tasks_completed)
+    damage: float = int(user.level) * float(skill_value) * int(len(tasks_completed))
     boss = BossRepository().hurt_boss(user_id=user_id, damage=damage)
     if task and boss and boss.status == 'defeated':
         flash("Missão concluída! Parabéns, herói! Você derrotou o chefe!", "success")
     elif task:
-        flash("Missão concluída! Parabéns, herói! Você causou {damage} de dano ao chefe!".format(damage=damage), "success")
+        flash("Missão concluída! Parabéns, herói! Você causou {damage:.2f} de dano ao chefe!".format(damage=damage), "success")
     else:
         flash("Erro ao concluir a missão.", "error")
     return redirect(url_for('main.dashboard', user_id=user_id))

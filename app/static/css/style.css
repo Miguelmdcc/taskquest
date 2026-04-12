@@ -178,3 +178,35 @@ dialog::backdrop {
     background-image: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(0,0,0,0.9) 100%);
     /* Cria um efeito de brilho dourado ao fundo */
 }
+
+/* Onde a barra fica */
+.skill-bar-container {
+    width: 100%;
+    height: 60px;
+    position: relative;
+    padding: 0;
+    background: linear-gradient(135deg, #222 0%, #3cff00 35%, #d9ff00 65%, #ff0000 100%);
+    overflow: hidden;
+}
+
+#skill-marker {
+    width: 15px;
+    height: 100%;
+    background-color: #f7d51d;
+    position: absolute;
+    left: 0;
+    box-shadow: 0 0 10px #fff;
+    
+    /* Usamos a variável --speed aqui. O '1.5s' é o valor de segurança (fallback) */
+    animation: slide var(--speed, 1.5s) alternate infinite linear;
+}
+
+@keyframes slide {
+    from { left: 0%; }
+    to { left: calc(100% - 15px); }
+}
+
+/* Pausa a animação quando adicionamos a classe 'stop' */
+#skill-marker.stop {
+    animation-play-state: paused;
+}

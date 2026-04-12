@@ -108,11 +108,10 @@
                         <div class="nes-container is-rounded is-dark">
                             <p>{{ task.title }}</p>
                             <div class="task-buttons">
-                                <form action="{{ url_for('main.task_done', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
-                                    <button type="submit" class="nes-btn is-success">
-                                        <i class="nes-icon like is-small"></i>
-                                    </button>
-                                </form>
+                                <button type="button" class="nes-btn is-success" 
+                                        onclick="openSkillCheck('{{ task.id }}', {{ 0.1 + (1.9/(1+(task.xp_reward/50*task.gold_reward))) }});">
+                                    <i class="nes-icon like is-small"></i>
+                                </button>
                                 <a onclick="document.getElementById('details-{{ task.id }}').showModal();" class="nes-btn is-primary">
                                     <i class="nes-icon star is-small"></i>
                                 </a>
@@ -172,6 +171,63 @@
                 });
             </script>
         {% endif %}
+
+        <dialog class="nes-dialog is-dark is-rounded" id="skill-check-modal">
+            <form method="POST" id="skill-form" action="{{ url_for('main.task_done') }}">
+                <p class="title">Sincronize o Golpe!</p>
+                <p>Clique no momento certo para ganhar bônus!</p>
+
+                <div class="skill-bar-container nes-container is-rounded">
+                    <div id="skill-marker"></div>
+                </div>
+
+                <input type="hidden" name="task_id" id="modal-task-id">
+                <input type="hidden" name="skill_value" id="skill-value-input">
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+
+                <menu class="dialog-menu" style="margin-top: 30px; text-align: center;">
+                    <button type="button" class="nes-btn is-primary" onclick="captureSkill()">GOLPEAR!</button>
+                </menu>
+            </form>
+        </dialog>
+
+        <script>
+            function openSkillCheck(taskId, speed) {
+                document.getElementById('modal-task-id').value = taskId;
+                const marker = document.getElementById('skill-marker');
+                
+                // Injetamos a velocidade diretamente no estilo do elemento
+                // Ex: se speed for 0.5, a animação levará meio segundo para ir e voltar
+                marker.style.setProperty('--speed', speed + 's');
+                
+                marker.classList.remove('stop');
+                document.getElementById('skill-check-modal').showModal();
+            }
+
+            function captureSkill() {
+                const container = document.querySelector('.skill-bar-container');
+                const marker = document.getElementById('skill-marker');
+                
+                // Para a animação
+                marker.classList.add('stop');
+
+                // Cálculo da posição
+                const containerWidth = container.offsetWidth - marker.offsetWidth;
+                const markerLeft = marker.offsetLeft;
+
+                // Converte para escala de 0 a 10
+                // (Posição Atual / Largura Total) * 10
+                let finalValue = (markerLeft / containerWidth) * 10;
+                finalValue = Math.round(finalValue * 10) / 10; // Arredonda para 1 casa decimal
+
+                console.log("Valor capturado:", finalValue);
+
+                // Salva no input escondido e envia o formulário
+                document.getElementById('skill-value-input').value = finalValue;
+                
+                document.getElementById('skill-form').submit();
+            }
+        </script>
 
     </main>
 </div>

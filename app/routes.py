@@ -42,9 +42,9 @@ def get_task_details():
 def accept_task(task_id):
     return acceptTaskUseCase(task_id, request)
 
-@main.route('/dashboard/task_done/<int:task_id>', methods=['POST'])
-def task_done(task_id):
-    return doneTaskUseCase(task_id, request)
+@main.route('/dashboard/task_done/', methods=['POST'])
+def task_done():
+    return doneTaskUseCase(request)
 
 @main.route('/dashboard/reset_journey/<int:user_id>', methods=['GET'])
 def reset_journey(user_id):
