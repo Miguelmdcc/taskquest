@@ -1,0 +1,212 @@
+/* Fonte de jogo e fundo escuro para todos */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background-color: #212529; /* Fundo padrão NES */
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Container para dar um respiro no conteúdo */
+.container {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Container que segura os alertas */
+.alert-overlay {
+    position: absolute; /* Tira o alerta do fluxo normal da página */
+    top: 20px;          /* Distância do topo */
+    left: 50%;          /* Move para o meio da tela */
+    transform: translateX(-50%); /* Ajuste para centralizar perfeitamente */
+    z-index: 1000;      /* Garante que fique por cima de tudo */
+    width: auto;
+    pointer-events: none; /* Permite clicar no que está atrás se necessário */
+}
+
+/* O alerta em si */
+.alert-overlay .nes-container {
+    pointer-events: auto; /* Reativa o clique no alerta */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Sombra para dar profundidade */
+    min-width: 300px;
+}
+
+/* Container principal: coloca Sidebar e Board lado a lado */
+.dashboard-wrapper {
+    display: flex;
+    gap: 20px; /* Espaço entre a sidebar e as colunas */
+    align-items: flex-start;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Sidebar: largura fixa para não sumir */
+.sidebar {
+    flex: 0 0 250px;
+}
+
+/* Quadro de Missões: ocupa o resto do espaço e divide em 3 */
+.task-board {
+    display: flex;
+    flex: 1; /* Ocupa todo o espaço que sobrar */
+    gap: 15px;
+    justify-content: space-between;
+}
+
+/* Cada coluna de Task */
+.task-column {
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    background-color: #002950; /* Fundo branco para destacar as tasks */
+    color: #212529;
+}
+
+/* Estilo para as tasks dentro da lista */
+.task-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Estilização da barra de rolagem (Chrome, Edge, Safari) */
+.task-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.task-list::-webkit-scrollbar-track {
+    background: #212529; /* Cor de fundo da trilha (escuro) */
+}
+
+.task-list::-webkit-scrollbar-thumb {
+    background: #ffffff; /* Cor da "peça" que desliza */
+    border: 2px solid #212529; /* Cria um efeito de borda 8-bit */
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd; /* Cor ao passar o mouse */
+}
+
+/* Área do Boss dentro da terceira coluna */
+.boss-area {
+    background-color: #000;
+    margin-bottom: 15px;
+}
+
+.task-column p#board-title-1 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: white solid 2px;
+    background-color: #124f9e;
+}
+
+.task-column p#board-title-1 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: rgb(0, 0, 0) solid 2px;
+    background-color: #124f9e;
+    text-align: center;
+    padding: 10px;
+    display: block;
+    width: 100%;
+}
+
+.task-column p#board-title-2 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: rgb(0, 0, 0) solid 2px;
+    background-color: #129e4c;
+    text-align: center;
+    padding: 10px;
+    display: block;
+    width: 100%;
+}
+
+.task-column p#board-title-3 {
+    color: black;
+    -webkit-text-stroke: 4px white;
+    paint-order: stroke fill;
+    outline: rgb(0, 0, 0) solid 2px;
+    background-color: #9e1212;
+    text-align: center;
+    padding: 10px;
+    display: block;
+    width: 100%;
+}
+
+#boss-title {
+    color: rgb(0, 0, 0);
+    -webkit-text-stroke: 4px rgb(255, 0, 0);
+    paint-order: stroke fill;
+    background-color: rgb(75, 0, 0);
+}
+
+#menu {
+    position: fixed; /* Fixa o elemento na tela */
+    top: 20px;       /* Distância do topo */
+    left: 20px;     /* Distância da direita */
+    z-index: 1000;   /* Garante que ele fique por cima de tudo */
+}
+
+/* Opcional: Ajuste para o botão não ficar colado no texto se a tela for pequena */
+#menu .nes-btn {
+    margin: 0;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.nes-dialog {
+    width: 500px; /* Largura fixa para não esticar */
+}
+
+#boss-defeated-dialog::backdrop {
+    background-image: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(0,0,0,0.9) 100%);
+    /* Cria um efeito de brilho dourado ao fundo */
+}
+
+/* Onde a barra fica */
+.skill-bar-container {
+    width: 100%;
+    height: 60px;
+    position: relative;
+    padding: 0;
+    background: linear-gradient(135deg, #222 0%, #3cff00 35%, #d9ff00 65%, #ff0000 100%);
+    overflow: hidden;
+}
+
+#skill-marker {
+    width: 15px;
+    height: 100%;
+    background-color: #f7d51d;
+    position: absolute;
+    left: 0;
+    box-shadow: 0 0 10px #fff;
+    
+    /* Usamos a variável --speed aqui. O '1.5s' é o valor de segurança (fallback) */
+    animation: slide var(--speed, 1.5s) alternate infinite linear;
+}
+
+@keyframes slide {
+    from { left: 0%; }
+    to { left: calc(100% - 15px); }
+}
+
+/* Pausa a animação quando adicionamos a classe 'stop' */
+#skill-marker.stop {
+    animation-play-state: paused;
+}

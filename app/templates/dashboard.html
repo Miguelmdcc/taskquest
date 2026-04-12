@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "menu_top.html" %}
+<div class="dashboard-wrapper">
+    
+    <aside class="sidebar nes-container is-dark with-title">
+        <p class="title">Status do Herói</p>
+        <div class="user-info">
+            <p><strong>{{ user.hero_name }}</strong></p>
+            <p>LVL<i class="nes-icon star is-small"></i>: {{ user.level }}</p>
+            
+            <label>XP⬆️:</label>
+            <progress class="nes-progress is-primary" value="{{ user.xp }}" max="100"></progress>
+            
+            <p>MOEDAS: {{ user.gold }}<i class="nes-icon coin is-small">
+                </i>
+            </p>
+        </div>
+        <button type="button" class="nes-btn is-success" onclick="document.getElementById('dialog-task').showModal();">
+            Nova Missão
+        </button>
+    </aside>
+
+    <dialog class="nes-dialog is-dark is-rounded" id="dialog-task">
+        <button type="button" class="nes-btn is-error" onclick="document.getElementById('dialog-task').close();" style="position:absolute; top:10px; right:10px;">
+        <i class="nes-icon close is-small"></i>
+        </button>
+        <p>Criando Missão</p>
+        <form action="{{ url_for('main.create_task') }}" method="POST">
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <input type="hidden" name="hero_name" value="{{ user.hero_name }}">
+            
+            <label>Título da Missão:</label>
+            <input type="text" name="title" class="nes-input">
+            <label>Descrição da Missão:</label>
+            <input type="text" name="description" class="nes-input">
+            <label>XP:</label>
+            <input type="text" name="xp" class="nes-input">
+            <label>Ouro:</label>
+            <input type="text" name="gold" class="nes-input">
+            
+            <button type="submit" class="nes-btn is-success">Publicar no Mural</button>
+        </form>
+    </dialog>
+
+    {% for task in tasks %}
+            <dialog class="nes-dialog is-rounded is-dark" id="details-{{ task.id }}">
+                <button type="button" class="nes-btn is-error" onclick="document.getElementById('details-{{ task.id }}').close();" style="position:absolute; top:10px; right:10px;">
+                <i class="nes-icon close is-small"></i>
+                </button>
+                <p>Detalhes da Missão</p>
+                <form action="{{ url_for('main.get_task_details') }}" method="POST">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="hidden" name="task_id" value="{{ task.id }}">
+                    
+                    <label>Título da Missão:</label>
+                    <input type="text" name="title" class="nes-input" value="{{ task.title }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    <label>Descrição da Missão:</label>
+                    <input type="text" name="description" class="nes-input" value="{{ task.description }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    <label>XP:</label>
+                    <input type="text" name="xp" class="nes-input" value="{{ task.xp_reward }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    <label>Ouro:</label>
+                    <input type="text" name="gold" class="nes-input" value="{{ task.gold_reward }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    
+                    {% if task.status != 'completed' %}
+                        <button type="submit" class="nes-btn is-success">Atualizar Missão no Mural</button>
+                    {% endif %}
+                </form>
+            </dialog>
+    {% endfor %}
+
+    <main class="task-board">
+        
+        <div class="task-column nes-container with-title">
+            <p class="title" id="board-title-1">Mural de Missões</p>
+            <div class="task-list">
+                {% for task in tasks %}
+                    {% if task.status == 'pending' %}
+                        <div class="nes-container is-rounded is-dark">
+                            <p>{{ task.title }}</p>
+                            <div class="task-buttons">
+                                <form action="{{ url_for('main.accept_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="nes-btn is-success">
+                                        <i class="nes-icon like is-small"></i>
+                                    </button>
+                                </form>
+                                <a onclick="document.getElementById('details-{{ task.id }}').showModal();" class="nes-btn is-primary">
+                                    <i class="nes-icon star is-small"></i>
+                                </a>
+                                <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="nes-btn is-error">
+                                        <i class="nes-icon close is-small"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="task-column nes-container with-title">
+            <p class="title" id="board-title-2">Andamento</p>
+            <div class="task-list">
+                {% for task in tasks %}
+                    {% if task.status == 'in_progress' %}
+                        <div class="nes-container is-rounded is-dark">
+                            <p>{{ task.title }}</p>
+                            <div class="task-buttons">
+                                <button type="button" class="nes-btn is-success" 
+                                        onclick="openSkillCheck('{{ task.id }}', {{ 0.1 + (1.9/(1+(task.xp_reward/50*task.gold_reward))) }});">
+                                    <i class="nes-icon like is-small"></i>
+                                </button>
+                                <a onclick="document.getElementById('details-{{ task.id }}').showModal();" class="nes-btn is-primary">
+                                    <i class="nes-icon star is-small"></i>
+                                </a>
+                                <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="nes-btn is-error">
+                                        <i class="nes-icon close is-small"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="task-column nes-container with-title">
+            <p class="title" id="board-title-3">Concluídas</p>
+            
+            <div class="boss-area nes-container is-error with-title">
+                <p class="title" id="boss-title">BOSS: {{ boss.name }}</p>
+                <progress class="nes-progress is-error" value="{{ boss.hp }}" max="{{ boss.max_hp }}"></progress>
+                <small>{{ boss.hp }} / {{ boss.max_hp }} HP</small>
+            </div>
+
+            <div class="task-list">
+                {% for task in tasks %}
+                    {% if task.status == 'completed' %}
+                        <div class="nes-container is-rounded is-dark">
+                            <p>{{ task.title }}</p>
+                            <div class="task-buttons">
+                                <a onclick="document.getElementById('details-{{ task.id }}').showModal();" class="nes-btn is-primary">
+                                    <i class="nes-icon star is-small"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if boss.status == 'defeated' %}
+            <dialog class="nes-dialog is-rounded is-dark" id="boss-defeated-dialog">
+                <form method="dialog">
+                    <p class="title" style="color: #f7d51d;"><i class="nes-icon trophy is-small"></i> VITÓRIA! <i class="nes-icon trophy is-small"></i></p>
+                    <p>O terrível <strong>{{ boss.name }}</strong> foi banido deste reino!</p>
+                    <p>Você provou ser um verdadeiro mestre de tarefas.</p>
+                    <a href="{{ url_for('main.reset_journey', user_id=user.id) }}" class="nes-btn is-success">Começar Nova Jornada</a>
+                </form>
+            </dialog>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const bossModal = document.getElementById('boss-defeated-dialog');
+                    if (bossModal) {
+                        bossModal.showModal();
+                    }
+                });
+            </script>
+        {% endif %}
+
+        <dialog class="nes-dialog is-dark is-rounded" id="skill-check-modal">
+            <form method="POST" id="skill-form" action="{{ url_for('main.task_done') }}">
+                <p class="title">Sincronize o Golpe!</p>
+                <p>Clique no momento certo para ganhar bônus!</p>
+
+                <div class="skill-bar-container nes-container is-rounded">
+                    <div id="skill-marker"></div>
+                </div>
+
+                <input type="hidden" name="task_id" id="modal-task-id">
+                <input type="hidden" name="skill_value" id="skill-value-input">
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+
+                <menu class="dialog-menu" style="margin-top: 30px; text-align: center;">
+                    <button type="button" class="nes-btn is-primary" onclick="captureSkill()">GOLPEAR!</button>
+                </menu>
+            </form>
+        </dialog>
+
+        <script>
+            function openSkillCheck(taskId, speed) {
+                document.getElementById('modal-task-id').value = taskId;
+                const marker = document.getElementById('skill-marker');
+                
+                // Injetamos a velocidade diretamente no estilo do elemento
+                // Ex: se speed for 0.5, a animação levará meio segundo para ir e voltar
+                marker.style.setProperty('--speed', speed + 's');
+                
+                marker.classList.remove('stop');
+                document.getElementById('skill-check-modal').showModal();
+            }
+
+            function captureSkill() {
+                const container = document.querySelector('.skill-bar-container');
+                const marker = document.getElementById('skill-marker');
+                
+                // Para a animação
+                marker.classList.add('stop');
+
+                // Cálculo da posição
+                const containerWidth = container.offsetWidth - marker.offsetWidth;
+                const markerLeft = marker.offsetLeft;
+
+                // Converte para escala de 0 a 10
+                // (Posição Atual / Largura Total) * 10
+                let finalValue = (markerLeft / containerWidth) * 10;
+                finalValue = Math.round(finalValue * 10) / 10; // Arredonda para 1 casa decimal
+
+                console.log("Valor capturado:", finalValue);
+
+                // Salva no input escondido e envia o formulário
+                document.getElementById('skill-value-input').value = finalValue;
+                
+                document.getElementById('skill-form').submit();
+            }
+        </script>
+
+    </main>
+</div>
+{% endblock %}

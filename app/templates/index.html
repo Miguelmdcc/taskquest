@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="nes-text is-primary">TASKQUEST</h1>
+    <p>Sua jornada começa agora.</p>
+    <br>
+    <a href="{{ url_for('main.create_hero') }}" class="nes-btn is-success">Criar Herói</a>
+    <br>
+    <a href="{{ url_for('main.use_hero') }}" class="nes-btn is-success">Usar Herói Salvo</a>
+{% endblock %}
