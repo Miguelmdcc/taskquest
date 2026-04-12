@@ -20,13 +20,12 @@ def createTaskUseCase(request):
 
         if not title or not description or not xp or not gold:
             flash("Todos os campos são obrigatórios para criar uma tarefa.", "error")
-            return render_template('create_task.html', user_id=user_id, hero_name=user.hero_name)
 
         task = TaskRepository()
         task.create_task(user_id=user_id, title=title, description=description, xp_reward=xp, gold_reward=gold)
         return redirect(url_for('main.dashboard', user_id=user_id))
 
-    return render_template('create_task.html', user_id=user_id, hero_name=user.hero_name)
+    return redirect(url_for('main.dashboard', user_id=user_id))
 
 def deleteTaskUseCase(task_id, request):
     user_id = request.args.get('user_id') or request.form.get('user_id')
@@ -54,18 +53,16 @@ def getTaskDetailsUseCase(request):
             return redirect(url_for('main.dashboard', user_id=user_id))
         else:
             flash("Erro ao atualizar a missão.", "error")
-            return render_template('task_details.html', task=task, user_id=user_id)
         
     task_id = request.args.get('task_id')
     user_id = request.args.get('user_id')
-    read_only = request.args.get('read_only', 'false').lower()
     task = TaskRepository().get_task_by_id(task_id)
 
     if not task:
         flash("Tarefa não encontrada.", "error")
         return render_template('dashboard.html', user_id=user_id)
 
-    return render_template('task_details.html', task=task, user_id=user_id, read_only=read_only)
+    return redirect(url_for('main.dashboard', user_id=user_id))
 
 def acceptTaskUseCase(task_id, request):
     user_id = request.args.get('user_id') or request.form.get('user_id')

@@ -17,10 +17,58 @@
                 </i>
             </p>
         </div>
-        <a href="{{ url_for('main.create_task', user_id=user.id) }}" class="nes-btn is-success">
-            Criar Missão
-        </a>
+        <button type="button" class="nes-btn is-success" onclick="document.getElementById('dialog-task').showModal();">
+            Nova Missão
+        </button>
     </aside>
+
+    <dialog class="nes-dialog is-dark is-rounded" id="dialog-task">
+        <button type="button" class="nes-btn is-error" onclick="document.getElementById('dialog-task').close();" style="position:absolute; top:10px; right:10px;">
+        <i class="nes-icon close is-small"></i>
+        </button>
+        <p>Criando Missão</p>
+        <form action="{{ url_for('main.create_task') }}" method="POST">
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <input type="hidden" name="hero_name" value="{{ user.hero_name }}">
+            
+            <label>Título da Missão:</label>
+            <input type="text" name="title" class="nes-input">
+            <label>Descrição da Missão:</label>
+            <input type="text" name="description" class="nes-input">
+            <label>XP:</label>
+            <input type="text" name="xp" class="nes-input">
+            <label>Ouro:</label>
+            <input type="text" name="gold" class="nes-input">
+            
+            <button type="submit" class="nes-btn is-success">Publicar no Mural</button>
+        </form>
+    </dialog>
+
+    {% for task in tasks %}
+            <dialog class="nes-dialog is-rounded is-dark" id="details-{{ task.id }}">
+                <button type="button" class="nes-btn is-error" onclick="document.getElementById('details-{{ task.id }}').close();" style="position:absolute; top:10px; right:10px;">
+                <i class="nes-icon close is-small"></i>
+                </button>
+                <p>Detalhes da Missão</p>
+                <form action="{{ url_for('main.get_task_details') }}" method="POST">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <input type="hidden" name="task_id" value="{{ task.id }}">
+                    
+                    <label>Título da Missão:</label>
+                    <input type="text" name="title" class="nes-input" value="{{ task.title }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    <label>Descrição da Missão:</label>
+                    <input type="text" name="description" class="nes-input" value="{{ task.description }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    <label>XP:</label>
+                    <input type="text" name="xp" class="nes-input" value="{{ task.xp_reward }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    <label>Ouro:</label>
+                    <input type="text" name="gold" class="nes-input" value="{{ task.gold_reward }}" {% if task.status == 'completed' %}readonly{% endif %}>
+                    
+                    {% if task.status != 'completed' %}
+                        <button type="submit" class="nes-btn is-success">Atualizar Missão no Mural</button>
+                    {% endif %}
+                </form>
+            </dialog>
+    {% endfor %}
 
     <main class="task-board">
         
@@ -37,7 +85,7 @@
                                         <i class="nes-icon like is-small"></i>
                                     </button>
                                 </form>
-                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id, read_only=False) }}" class="nes-btn is-primary">
+                                <a onclick="document.getElementById('details-{{ task.id }}').showModal();" class="nes-btn is-primary">
                                     <i class="nes-icon star is-small"></i>
                                 </a>
                                 <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
@@ -65,7 +113,7 @@
                                         <i class="nes-icon like is-small"></i>
                                     </button>
                                 </form>
-                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id, read_only=False) }}" class="nes-btn is-primary">
+                                <a onclick="document.getElementById('details-{{ task.id }}').showModal();" class="nes-btn is-primary">
                                     <i class="nes-icon star is-small"></i>
                                 </a>
                                 <form action="{{ url_for('main.delete_task', task_id=task.id, user_id=user.id) }}" method="POST" style="display:inline;">
@@ -95,7 +143,7 @@
                         <div class="nes-container is-rounded is-dark">
                             <p>{{ task.title }}</p>
                             <div class="task-buttons">
-                                <a href="{{ url_for('main.get_task_details', task_id=task.id, user_id=user.id, read_only=True) }}" class="nes-btn is-primary">
+                                <a onclick="document.getElementById('details-{{ task.id }}').showModal();" class="nes-btn is-primary">
                                     <i class="nes-icon star is-small"></i>
                                 </a>
                             </div>
@@ -104,6 +152,31 @@
                 {% endfor %}
             </div>
         </div>
+
+        {% if boss.status == 'defeated' %}
+            <dialog class="nes-dialog is-rounded is-dark" id="boss-defeated-dialog">
+                <form method="dialog">
+                    <button type="button" class="nes-btn is-error" onclick="this.closest('dialog').close();" style="position:absolute; top:10px; right:10px;">
+                        <i class="nes-icon close is-small"></i>
+                    </button>
+                    
+                    <p class="title" style="color: #f7d51d;"><i class="nes-icon trophy is-small"></i> VITÓRIA! <i class="nes-icon trophy is-small"></i></p>
+                    <p>O terrível <strong>{{ boss.name }}</strong> foi banido deste reino!</p>
+                    <p>Você provou ser um verdadeiro mestre de tarefas.</p>
+                    
+                    <a href="{{ url_for('main.index') }}" class="nes-btn is-primary">Voltar ao Menu</a>
+                </form>
+            </dialog>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const bossModal = document.getElementById('boss-defeated-dialog');
+                    if (bossModal) {
+                        bossModal.showModal();
+                    }
+                });
+            </script>
+        {% endif %}
 
     </main>
 </div>
