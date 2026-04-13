@@ -18,7 +18,7 @@
 source setup.sh
 ```
 
-##### Após a instalação vamos iniciar o programa:
+##### Após a instalação vamos iniciar o programa no mesmo terminal:
 
 ```
 python run.py
